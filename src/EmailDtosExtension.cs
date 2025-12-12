@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.IO;
-using System.Linq;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using Soenneker.Dtos.Email;
@@ -35,7 +34,7 @@ public static class EmailDtoExtension
         if (emailDto.Body.IsNullOrEmpty())
             throw new Exception("Missing body for email");
 
-        if (!emailDto.To.Any())
+        if (emailDto.To is null || emailDto.To.Count == 0)
             throw new Exception("Missing recipients for email");
 
         var message = new MimeMessage();
