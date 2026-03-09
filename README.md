@@ -1,11 +1,12 @@
-﻿[![](https://img.shields.io/nuget/v/soenneker.extensions.dtos.email.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.extensions.dtos.email/)
+[![](https://img.shields.io/nuget/v/soenneker.extensions.dtos.email.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.extensions.dtos.email/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.extensions.dtos.email/publish-package.yml?style=for-the-badge)](https://github.com/soenneker/soenneker.extensions.dtos.email/actions/workflows/publish-package.yml)
 [![](https://img.shields.io/nuget/dt/soenneker.extensions.dtos.email.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.extensions.dtos.email/)
+[![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.extensions.dtos.email/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.extensions.dtos.email/actions/workflows/codeql.yml)
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Extensions.Dtos.Email
 ### A collection of helpful EmailDto extension methods
 
-## 📧  Features
+## ??  Features
 
 - Converts a well-defined `EmailDto` into a [MimeKit](https://github.com/jstedfast/MimeKit) `MimeMessage`
 - Supports both `html` and `plain` formats
@@ -16,7 +17,7 @@
 
 ---
 
-## 🧪 Validation
+## ?? Validation
 
 The extension validates:
 - Required fields: `To`, `Subject`, and `Body`
@@ -33,7 +34,7 @@ dotnet add package Soenneker.Extensions.Dtos.Email
 
 ---
 
-## 🔧 Usage
+## ?? Usage
 
 ```csharp
 var mimeMessage = emailDto.ToMimeMessage(logger);
@@ -41,7 +42,7 @@ var mimeMessage = emailDto.ToMimeMessage(logger);
 
 ---
 
-## 📁 Example `EmailDto`
+## ?? Example `EmailDto`
 
 ```csharp
 var dto = new EmailDto
