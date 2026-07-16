@@ -45,7 +45,7 @@
 
     <ItemGroup>
         <PackageReference Include="MimeKit" Version="4.17.0" />
-        <PackageReference Include="Soenneker.Dtos.Email" Version="4.0.249" />
+        <PackageReference Include="Soenneker.Dtos.Email" Version="4.0.250" />
         <PackageReference Include="Soenneker.Extensions.Enumerable.String" Version="4.0.1384" />
     </ItemGroup>
 </Project>
