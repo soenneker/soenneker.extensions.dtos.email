@@ -5,7 +5,6 @@ using MimeKit;
 using Soenneker.Dtos.Email;
 using Soenneker.Dtos.Email.Attachment;
 using Soenneker.Extensions.Enumerable;
-using Soenneker.Extensions.Enumerable.String;
 using Soenneker.Extensions.String;
 
 namespace Soenneker.Extensions.Dtos.Email;
@@ -22,20 +21,23 @@ public static class EmailDtoExtension
     /// <param name="logger">An <see cref="ILogger"/> used for logging malformed or empty recipient fields.</param>
     /// <returns>A fully constructed <see cref="MimeMessage"/> object.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="emailDto"/> is null.</exception>
-    /// <exception cref="Exception">Thrown if subject, body, or recipients are missing from the DTO.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the subject, body, sender address, or a usable recipient is missing.</exception>
     public static MimeMessage ToMimeMessage(this EmailDto emailDto, ILogger logger)
     {
         if (emailDto == null)
             throw new ArgumentNullException(nameof(emailDto));
 
-        if (emailDto.Subject.IsNullOrEmpty())
-            throw new Exception("Missing subject for email");
+        if (emailDto.Subject.IsNullOrWhiteSpace())
+            throw new InvalidOperationException("Missing subject for email");
 
-        if (emailDto.Body.IsNullOrEmpty())
-            throw new Exception("Missing body for email");
+        if (emailDto.Body.IsNullOrWhiteSpace())
+            throw new InvalidOperationException("Missing body for email");
 
         if (emailDto.To is null || emailDto.To.Count == 0)
-            throw new Exception("Missing recipients for email");
+            throw new InvalidOperationException("Missing recipients for email");
+
+        if (emailDto.Address.IsNullOrWhiteSpace())
+            throw new InvalidOperationException("Missing sender address for email");
 
         var message = new MimeMessage();
 
@@ -43,12 +45,15 @@ public static class EmailDtoExtension
         {
             if (recipient.IsNullOrWhiteSpace())
             {
-                logger.LogError("Recipient was null or whitespace. Recipients: {recipients}", emailDto.To.ToCommaSeparatedString());
+                logger.LogError("A recipient address was null or whitespace and was skipped");
                 continue;
             }
 
             message.To.Add(new MailboxAddress("", recipient));
         }
+
+        if (message.To.Count == 0)
+            throw new InvalidOperationException("Missing usable recipients for email");
 
         if (emailDto.Cc.Populated())
         {
@@ -56,7 +61,7 @@ public static class EmailDtoExtension
             {
                 if (cc.IsNullOrWhiteSpace())
                 {
-                    logger.LogError("Cc email was null or whitespace. CC: {recipients}", emailDto.Cc.ToCommaSeparatedString());
+                    logger.LogError("A Cc address was null or whitespace and was skipped");
                     continue;
                 }
 
@@ -70,7 +75,7 @@ public static class EmailDtoExtension
             {
                 if (bcc.IsNullOrWhiteSpace())
                 {
-                    logger.LogError("Bcc email was null or whitespace. BCC: {recipients}", emailDto.Bcc.ToCommaSeparatedString());
+                    logger.LogError("A Bcc address was null or whitespace and was skipped");
                     continue;
                 }
 
