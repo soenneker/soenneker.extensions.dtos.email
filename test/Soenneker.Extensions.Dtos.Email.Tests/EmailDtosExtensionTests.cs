@@ -21,7 +21,7 @@ public class EmailDtosExtensionTests : HostedUnitTest
     }
 
     [Test]
-    public async System.Threading.Tasks.Task ToMimeMessage_rejects_a_recipient_list_with_no_usable_addresses()
+    public async System.Threading.Tasks.ValueTask ToMimeMessage_rejects_a_recipient_list_with_no_usable_addresses()
     {
         var dto = new EmailDto
         {
